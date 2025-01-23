@@ -22,6 +22,7 @@
         linear-gradient(180deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
       background-size: 30px 30px;
       background-position: 0 0;
+      animation: backgroundMove 5s linear infinite;
     }
 
     h1 {
@@ -67,6 +68,7 @@
       border-radius: 10px;
       text-align: center;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 100);
+      animation: glow 1.5s infinite alternate;
     }
     .bottom-2 {
       
@@ -118,8 +120,27 @@
       }
     }
 
+    @keyframes backgroundMove {
+      0% {
+        background-position: 0 0;
+      }
+      100% {
+        background-position: 60px 60px;
+      }
+    }
+
+    @keyframes glow {
+      from {
+        box-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff;
+      }
+        to {
+        box-shadow: 0 0 20px #00aaff, 0 0 40px #00aaff;
+      }
+    }
+
     button:hover {
       background-color: #2980b9;
+      box-shadow: 0 0 10px #3498db;
     }
   </style>
 </head>
@@ -132,7 +153,7 @@
     <button id="incrementButton">Click Me!</button>
   </div>
 
-  <div class="bottom-1">
+  <div class="bottom-right">
     <h2 id="timePlayed">Time played<br>
       00:00
     </h2>
@@ -171,10 +192,9 @@
         "Click power!",
         "Wow, you're unstoppable!"
       ];
-
-      if (count % 5 === 0) {
-        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-        alert(randomMessage);
+      
+      if (count === 777) {
+        alert("Jackpot! You're amazing!");
       }
       
       splitCount.forEach(function(digit, index) {
