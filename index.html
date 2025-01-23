@@ -164,6 +164,19 @@
       let splitCount = formattedCount.split("");
       let newDigits = [];
 
+      const messages = [
+        "Great job!",
+        "Keep going!",
+        "You're amazing!",
+        "Click power!",
+        "Wow, you're unstoppable!"
+      ];
+
+      if (count % 5 === 0) {
+        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+        alert(randomMessage);
+      }
+      
       splitCount.forEach(function(digit, index) {
         const digitSpan = document.createElement('span');
         digitSpan.textContent = digit;
