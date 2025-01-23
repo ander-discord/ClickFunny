@@ -34,6 +34,8 @@
     }
 
     .box {
+      position: relative;
+      z-index: 2; /* Ensure content is above the canvas */
       background-color: rgb(40, 40, 40);
       padding: 40px;
       border-radius: 10px;
@@ -66,7 +68,10 @@
       position: absolute;
       top: 0;
       left: 0;
-      pointer-events: none;
+      width: 100%;
+      height: 100%;
+      z-index: 1; /* Ensure the canvas is behind the content */
+      pointer-events: none; /* Prevent canvas from blocking interactions */
     }
   </style>
 </head>
@@ -75,13 +80,12 @@
   <div class="box">
     <h1>Hi, this counter funny :3</h1>
     <h1>ClickFunny</h1>
-    <div class="count" id="countContainer"></div>
+    <div class="count" id="countContainer">0000000</div>
     <h1>I would you click at this button</h1>
     <button id="incrementButton">Click Me!</button>
   </div>
   <script>
     let count = 0;
-    let seconds = 0;
 
     const button = document.getElementById('incrementButton');
     const countContainer = document.getElementById('countContainer');
@@ -91,45 +95,19 @@
     fireworkCanvas.width = window.innerWidth;
     fireworkCanvas.height = window.innerHeight;
 
-    setInterval(() => {
-      seconds++;
-      let minutes = Math.floor(seconds / 60);
-      let remainingSeconds = seconds % 60;
-      let formattedTime = `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
-      document.getElementById('timePlayed').innerHTML = `Time played <br> ${formattedTime}`;
-    }, 1000);
-
+    // Create firework on button click
     button.addEventListener('click', () => {
       count++;
       updateCounter();
       createFirework(window.innerWidth / 2, fireworkCanvas.height / 2);
     });
 
+    // Counter animation
     function updateCounter() {
-      let formattedCount = String(count).padStart(7, "0");
-      let splitCount = formattedCount.split("");
-      let newDigits = [];
-
-      splitCount.forEach((digit) => {
-        const digitSpan = document.createElement('span');
-        digitSpan.textContent = digit;
-        digitSpan.classList.add('new-digit');
-        newDigits.push(digitSpan);
-      });
-
-      const oldDigits = countContainer.querySelectorAll('span');
-      oldDigits.forEach((oldDigit) => {
-        oldDigit.classList.add('old-digit');
-        oldDigit.addEventListener('animationend', () => {
-          oldDigit.remove();
-        });
-      });
-
-      setTimeout(() => {
-        newDigits.forEach((digitSpan) => countContainer.appendChild(digitSpan));
-      }, 240);
+      countContainer.textContent = String(count).padStart(7, "0");
     }
 
+    // Firework logic
     const particles = [];
     function createFirework(x, y) {
       const colors = ["#FF5733", "#33FF57", "#3357FF", "#FF33A6", "#FFFF33"];
@@ -164,6 +142,7 @@
           ctx.fill();
         }
       }
+
       requestAnimationFrame(animate);
     }
 
@@ -175,7 +154,10 @@
         b: bigint & 255,
       };
     }
+
     animate();
+
+    // Resize canvas dynamically
     window.addEventListener('resize', () => {
       fireworkCanvas.width = window.innerWidth;
       fireworkCanvas.height = window.innerHeight;
