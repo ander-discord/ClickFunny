@@ -60,7 +60,7 @@
       box-shadow: 0 4px 10px rgba(0, 0, 0, 100);
     }
 
-    .bottom-1 {
+    .top-screen {
       position: absolute;
       bottom: 0px;
       right: 0px;
@@ -71,10 +71,7 @@
       box-shadow: 0 4px 10px rgba(0, 0, 0, 100);
       animation: glow 1.5s infinite alternate;
     }
-    .bottom-2 {
-      
-    }
-
+    
     .count {
       font-size: 48px;
       color: white;
@@ -159,10 +156,11 @@
     <h2 id="timePlayed">Time played<br>
       00:00
     </h2>
+    <h2>DM Me if you wanna (ander__p)</h2>
   </div>
 
   <script>
-    console.log('Version webgame: 1.03');
+    console.log('Version webgame: 1.04');
     let count = 0;
     let seconds = 0;
 
@@ -187,13 +185,13 @@
       let splitCount = formattedCount.split("");
       let newDigits = [];
 
-      const messages = [
-        "Great job!",
-        "Keep going!",
-        "You're amazing!",
-        "Click power!",
-        "Wow, you're unstoppable!"
-      ];
+      if (count === 1) {
+        alert("Thanks! Welcome to my game");
+      }
+
+      if ([10, 100, 250, 500, 1000].includes(count)) {
+        alert("Wow, thanks. Maybe your are pro or starter);
+      }
       
       if (count === 777) {
         alert("Jackpot! You're amazing!");
