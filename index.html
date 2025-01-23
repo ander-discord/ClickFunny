@@ -1,1 +1,188 @@
-<h1>test<h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClickFunny</title>
+  <link rel="icon" href="https://images.emojiterra.com/twitter/v13.1/512px/1f4ab.png" type="image/png">
+  <style>
+    body {
+      background-color: rgb(25, 25, 25);
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+
+      background-image: 
+        linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px), 
+        linear-gradient(180deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+      background-size: 30px 30px;
+      background-position: 0 0;
+    }
+
+    h1 {
+      color: white;
+    }
+    h2 {
+      color: white;
+      font-size: 15px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: #00aaff;
+      color: white;
+      border: 3px solid #3498db;
+      border-radius: 7.5px;
+      cursor: pointer;
+    }
+
+    .bottom-right {
+      position: absolute;
+      bottom: 0px;
+      right: 0px;
+      font-size: 20px;
+    }
+
+    .box {
+      background-color: rgb(40, 40, 40);
+      padding: 40px;
+      border-radius: 10px;
+      border: solid rgb(85, 85, 85);
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 100);
+    }
+
+    .bottom-1 {
+      position: absolute;
+      bottom: 0px;
+      right: 0px;
+      background-color: rgba(40, 40, 40, 0.8);
+      text-align: center;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+    .bottom-2 {
+      
+    }
+
+    .count {
+      font-size: 48px;
+      color: white;
+      background-color: #2f2f2f;
+      border: solid rgb(85, 85, 85);
+      border-radius: 10px;
+      display: inline-flex;
+      padding: 25px;
+    }
+
+    span {
+      color: white;
+      margin-right: 5px;
+      display: inline-block;
+    }
+
+    .new-digit {
+      animation: moveUp 0.25s ease forwards;
+    }
+
+    .old-digit {
+      animation: moveUpUp 0.25s ease forwards;
+    }
+
+    @keyframes moveUp {
+      0% {
+        transform: translateY(40px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0px);
+        opacity: 1;
+      }
+    }
+
+    @keyframes moveUpUp {
+      0% {
+        transform: translateY(0px);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-40px);
+        opacity: 0;
+      }
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>Hi, this counter funny :3</h1>
+    <h1>ClickFunny</h1>
+    <div class="count" id="countContainer"></div>
+    <h1>I would you click at this button</h1>
+    <button id="incrementButton">Click Me!</button>
+  </div>
+
+  <div class="bottom-1">
+    <h2 id="timePlayed">Time played<br>
+      00:00
+    </h2>
+  </div>
+
+  <script>
+    let count = 0;
+    let seconds = 0;
+
+    const button = document.getElementById('incrementButton');
+    const countContainer = document.getElementById('countContainer');
+    const timePlayedContainer = document.getElementById('timePlayed');
+
+    setInterval(function() {
+      seconds++;
+
+      let minutes = Math.floor(seconds / 60);
+      let remainingSeconds = seconds % 60;
+      let formattedTime = `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+
+       timePlayedContainer.innerHTML = `Time played <br> ${formattedTime}`;
+    }, 1000);
+
+    button.addEventListener('click', function() {
+      count++;
+
+      let formattedCount = String(count).padStart(7, "0");
+      let splitCount = formattedCount.split("");
+      let newDigits = [];
+
+      splitCount.forEach(function(digit, index) {
+        const digitSpan = document.createElement('span');
+        digitSpan.textContent = digit;
+        digitSpan.classList.add('new-digit');
+        newDigits.push(digitSpan);
+      });
+
+      const oldDigits = countContainer.querySelectorAll('span');
+      oldDigits.forEach(function(oldDigit) {
+        oldDigit.classList.add('old-digit');
+        oldDigit.addEventListener('animationend', function() {
+          oldDigit.remove();
+        });
+      });
+
+      setTimeout(() => {
+        newDigits.forEach(function(digitSpan) {
+          countContainer.appendChild(digitSpan);
+        });
+      }, 240);
+    });
+  </script>
+</body>
+</html>
