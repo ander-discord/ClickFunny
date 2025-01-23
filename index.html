@@ -16,17 +16,20 @@
       height: 100vh;
       margin: 0;
       text-align: center;
-      overflow: hidden;
+
       background-image: 
-        linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px), 
         linear-gradient(180deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
       background-size: 30px 30px;
       background-position: 0 0;
-      z-index: -1;
     }
 
-    h1, h2 {
+    h1 {
       color: white;
+    }
+    h2 {
+      color: white;
+      font-size: 15px;
     }
 
     button {
@@ -39,15 +42,34 @@
       cursor: pointer;
     }
 
+    .bottom-right {
+      position: absolute;
+      bottom: 0px;
+      right: 0px;
+      font-size: 20px;
+    }
+
     .box {
-      position: relative;
-      z-index: 2;
       background-color: rgb(40, 40, 40);
       padding: 40px;
       border-radius: 10px;
       border: solid rgb(85, 85, 85);
       text-align: center;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 100);
+    }
+
+    .bottom-1 {
+      position: absolute;
+      bottom: 0px;
+      right: 0px;
+      background-color: rgba(40, 40, 40, 0.8);
+      border: solid rgb(85, 85, 85);
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 100);
+    }
+    .bottom-2 {
+      
     }
 
     .count {
@@ -67,33 +89,31 @@
     }
 
     .new-digit {
-      transform: translateY(30px);
-      opacity: 0;
-      animation: moveIn 0.3s ease forwards;
+      animation: moveUp 0.25s ease forwards;
     }
 
     .old-digit {
-      animation: moveOut 0.3s ease forwards;
+      animation: moveUpUp 0.25s ease forwards;
     }
 
-    @keyframes moveIn {
+    @keyframes moveUp {
       0% {
-        transform: translateY(30px);
+        transform: translateY(40px);
         opacity: 0;
       }
       100% {
-        transform: translateY(0);
+        transform: translateY(0px);
         opacity: 1;
       }
     }
 
-    @keyframes moveOut {
+    @keyframes moveUpUp {
       0% {
-        transform: translateY(0);
+        transform: translateY(0px);
         opacity: 1;
       }
       100% {
-        transform: translateY(-30px);
+        transform: translateY(-40px);
         opacity: 0;
       }
     }
@@ -101,124 +121,69 @@
     button:hover {
       background-color: #2980b9;
     }
-
-    canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-      pointer-events: none;
-    }
   </style>
 </head>
 <body>
-  <canvas id="fireworkCanvas"></canvas>
   <div class="box">
     <h1>Hi, this counter funny :3</h1>
     <h1>ClickFunny</h1>
-    <div class="count" id="countContainer">0000000</div>
+    <div class="count" id="countContainer"></div>
     <h1>I would you click at this button</h1>
     <button id="incrementButton">Click Me!</button>
   </div>
+
+  <div class="bottom-1">
+    <h2 id="timePlayed">Time played<br>
+      00:00
+    </h2>
+  </div>
+
   <script>
+    console.log('Version webgame: 1.0');
     let count = 0;
+    let seconds = 0;
 
     const button = document.getElementById('incrementButton');
     const countContainer = document.getElementById('countContainer');
-    const fireworkCanvas = document.getElementById('fireworkCanvas');
-    const ctx = fireworkCanvas.getContext('2d');
+    const timePlayedContainer = document.getElementById('timePlayed');
 
-    fireworkCanvas.width = window.innerWidth;
-    fireworkCanvas.height = window.innerHeight;
+    setInterval(function() {
+      seconds++;
 
-    button.addEventListener('click', () => {
+      let minutes = Math.floor(seconds / 60);
+      let remainingSeconds = seconds % 60;
+      let formattedTime = ${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')};
+
+       timePlayedContainer.innerHTML = Time played <br> ${formattedTime};
+    }, 1000);
+
+    button.addEventListener('click', function() {
       count++;
-      updateCounter();
-      createFirework(Math.random() * window.innerWidth, Math.random() * fireworkCanvas.height);
-    });
 
-    function updateCounter() {
-      const newCount = String(count).padStart(7, "0");
-      const currentDigits = countContainer.querySelectorAll("span");
-      const newDigits = [];
+      let formattedCount = String(count).padStart(7, "0");
+      let splitCount = formattedCount.split("");
+      let newDigits = [];
 
-      for (let i = 0; i < newCount.length; i++) {
-        const digitSpan = document.createElement("span");
-        digitSpan.textContent = newCount[i];
-        digitSpan.classList.add("new-digit");
+      splitCount.forEach(function(digit, index) {
+        const digitSpan = document.createElement('span');
+        digitSpan.textContent = digit;
+        digitSpan.classList.add('new-digit');
         newDigits.push(digitSpan);
-      }
+      });
 
-      currentDigits.forEach((digit, index) => {
-        if (newCount[index] !== digit.textContent) {
-          digit.classList.add("old-digit");
-          digit.addEventListener("animationend", () => {
-            digit.remove();
-          });
-        }
+      const oldDigits = countContainer.querySelectorAll('span');
+      oldDigits.forEach(function(oldDigit) {
+        oldDigit.classList.add('old-digit');
+        oldDigit.addEventListener('animationend', function() {
+          oldDigit.remove();
+        });
       });
 
       setTimeout(() => {
-        newDigits.forEach((digitSpan) => {
+        newDigits.forEach(function(digitSpan) {
           countContainer.appendChild(digitSpan);
         });
-      }, 250);
-    }
-
-    const particles = [];
-    function createFirework(x, y) {
-      const colors = ["#FF5733", "#33FF57", "#3357FF", "#FF33A6", "#FFFF33"];
-      for (let i = 0; i < 50; i++) {
-        particles.push({
-          x,
-          y,
-          speedX: (Math.random() - 0.5) * 8,
-          speedY: (Math.random() - 0.5) * 8,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          alpha: 1,
-        });
-      }
-    }
-
-    function animate() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
-      ctx.fillRect(0, 0, fireworkCanvas.width, fireworkCanvas.height);
-
-      for (let i = particles.length - 1; i >= 0; i--) {
-        const p = particles[i];
-        p.x += p.speedX;
-        p.y += p.speedY;
-        p.alpha -= 0.02;
-
-        if (p.alpha <= 0) {
-          particles.splice(i, 1);
-        } else {
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${hexToRgb(p.color).r}, ${hexToRgb(p.color).g}, ${hexToRgb(p.color).b}, ${p.alpha})`;
-          ctx.fill();
-        }
-      }
-
-      requestAnimationFrame(animate);
-    }
-
-    function hexToRgb(hex) {
-      const bigint = parseInt(hex.slice(1), 16);
-      return {
-        r: (bigint >> 16) & 255,
-        g: (bigint >> 8) & 255,
-        b: bigint & 255,
-      };
-    }
-
-    animate();
-
-    window.addEventListener('resize', () => {
-      fireworkCanvas.width = window.innerWidth;
-      fireworkCanvas.height = window.innerHeight;
+      }, 240);
     });
   </script>
 </body>
