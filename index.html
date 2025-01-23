@@ -17,7 +17,6 @@
       margin: 0;
       text-align: center;
       overflow: hidden;
-
       background-image: 
         linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
         linear-gradient(180deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
@@ -67,9 +66,9 @@
     }
 
     .new-digit {
-    transform: translateY(30px);
-    opacity: 0;
-    animation: moveIn 0.3s ease forwards;
+      transform: translateY(30px);
+      opacity: 0;
+      animation: moveIn 0.3s ease forwards;
     }
 
     .old-digit {
@@ -140,17 +139,18 @@
     });
 
     function updateCounter() {
-        const newCount = String(count).padStart(7, "0");
-        const currentDigits = countContainer.querySelectorAll("span");
-        const newDigits = [];
-        for (let i = 0; i < newCount.length; i++) {
-          const digitSpan = document.createElement("span");
-          digitSpan.textContent = newCount[i];
-          digitSpan.classList.add("new-digit");
-          newDigits.push(digitSpan);
-        }
+      const newCount = String(count).padStart(7, "0");
+      const currentDigits = countContainer.querySelectorAll("span");
+      const newDigits = [];
 
-        currentDigits.forEach((digit, index) => {
+      for (let i = 0; i < newCount.length; i++) {
+        const digitSpan = document.createElement("span");
+        digitSpan.textContent = newCount[i];
+        digitSpan.classList.add("new-digit");
+        newDigits.push(digitSpan);
+      }
+
+      currentDigits.forEach((digit, index) => {
         if (newCount[index] !== digit.textContent) {
           digit.classList.add("old-digit");
           digit.addEventListener("animationend", () => {
@@ -160,11 +160,11 @@
       });
 
       setTimeout(() => {
-      newDigits.forEach((digitSpan) => {
-        countContainer.appendChild(digitSpan);
-      });
-    }, 250);
-  }
+        newDigits.forEach((digitSpan) => {
+          countContainer.appendChild(digitSpan);
+        });
+      }, 250);
+    }
 
     const particles = [];
     function createFirework(x, y) {
