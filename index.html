@@ -160,9 +160,9 @@
   </div>
 
   <script>
-    console.log('Version webgame: 1.04');
-    let count = 0;
-    let seconds = 0;
+    console.log('Version webgame: 1.05');
+    let count = parseInt(localStorage.getItem('clickCount')) || 0;
+    let seconds = parseInt(localStorage.getItem('timePlayed')) || 0;
 
     const button = document.getElementById('incrementButton');
     const countContainer = document.getElementById('countContainer');
@@ -180,6 +180,9 @@
 
     button.addEventListener('click', function() {
       count++;
+
+      localStorage.setItem('clickCount', count);
+      localStorage.setItem('timePlayed', seconds);
 
       let formattedCount = String(count).padStart(7, "0");
       let splitCount = formattedCount.split("");
@@ -216,7 +219,7 @@
         newDigits.forEach(function(digitSpan) {
           countContainer.appendChild(digitSpan);
         });
-      }, 240);
+      }, 255);
     });
   </script>
 </body>
