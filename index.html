@@ -60,6 +60,38 @@
       display: inline-block;
     }
 
+    .new-digit {
+    transform: translateY(30px);
+    opacity: 0;
+    animation: moveIn 0.3s ease forwards;
+    }
+
+    .old-digit {
+      animation: moveOut 0.3s ease forwards;
+    }
+
+    @keyframes moveIn {
+      0% {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes moveOut {
+      0% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-30px);
+        opacity: 0;
+      }
+    }
+
     button:hover {
       background-color: #2980b9;
     }
@@ -102,8 +134,31 @@
     });
 
     function updateCounter() {
-      countContainer.textContent = String(count).padStart(7, "0");
-    }
+        const newCount = String(count).padStart(7, "0");
+        const currentDigits = countContainer.querySelectorAll("span");
+        const newDigits = [];
+        for (let i = 0; i < newCount.length; i++) {
+          const digitSpan = document.createElement("span");
+          digitSpan.textContent = newCount[i];
+          digitSpan.classList.add("new-digit");
+          newDigits.push(digitSpan);
+        }
+
+        currentDigits.forEach((digit, index) => {
+        if (newCount[index] !== digit.textContent) {
+          digit.classList.add("old-digit");
+          digit.addEventListener("animationend", () => {
+            digit.remove();
+          });
+        }
+      });
+
+      setTimeout(() => {
+      newDigits.forEach((digitSpan) => {
+        countContainer.appendChild(digitSpan);
+      });
+    }, 250);
+  }
 
     const particles = [];
     function createFirework(x, y) {
@@ -154,7 +209,6 @@
 
     animate();
 
-    // Resize canvas dynamically
     window.addEventListener('resize', () => {
       fireworkCanvas.width = window.innerWidth;
       fireworkCanvas.height = window.innerHeight;
