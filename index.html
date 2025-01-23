@@ -154,7 +154,7 @@
       let remainingSeconds = seconds % 60;
       let formattedTime = `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
 
-       timePlayedContainer.innerHTML = Time played <br> ${formattedTime};
+       timePlayedContainer.innerHTML = `Time played <br>${formattedTime}`;
     }, 1000);
 
     button.addEventListener('click', function() {
