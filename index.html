@@ -179,7 +179,7 @@
        timePlayedContainer.innerHTML = `Time played <br>${formattedTime}`;
     }, 1000);
 
-    button.addEventListener('click', function() {
+    button.addEventListener('click', async function() {
       count++;
 
       localStorage.setItem('clickCount', count);
