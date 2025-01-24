@@ -167,6 +167,7 @@
     const button = document.getElementById('incrementButton');
     const countContainer = document.getElementById('countContainer');
     const timePlayedContainer = document.getElementById('timePlayed');
+    const jokeDisplay = document.querySelector('h1:nth-of-type(3)');
 
     setInterval(function() {
       seconds++;
@@ -192,12 +193,37 @@
         alert("Thanks! Welcome to my game");
       }
 
+      if (count === 2) {
+        alert("I telling joke")
+      }
+
       if ([10, 100, 250, 500, 1000].includes(count)) {
         alert("Wow | thanks Maybe you are a pro or starter!");
       }
       
       if (count === 777) {
         alert("Jackpot! You're amazing!");
+      }
+
+      if (count > 2) {
+        const apiURL = 'https://icanhazdadjoke.com/';
+        try {
+          const response = await fetch(apiURL, {
+            headers: {
+              Accept: 'application/json',
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          jokeDisplay.textContent = `"${data.joke}"`;
+        } catch (error) {
+          jokeDisplay.textContent = "Uhhh, click it again";
+          console.error('Error fetching dad joke:', error);
+        }
       }
       
       splitCount.forEach(function(digit, index) {
