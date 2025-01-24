@@ -51,6 +51,14 @@
       animation: pulse 500ms infinite ease-in-out;
     }
 
+    .dot {
+      width: 20px;
+      height: 20px;
+      background-color: white;
+      border-radius: 50%;
+      position: absolute;
+    }
+
     .bottom-right {
       position: absolute;
       bottom: 0px;
@@ -187,6 +195,15 @@
     const timePlayedContainer = document.getElementById('timePlayed');
     const jokeDisplay = document.querySelector('h1:nth-of-type(3)');
 
+    function getRandomColor() {
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
     setInterval(function() {
       seconds++;
 
@@ -202,6 +219,21 @@
 
       localStorage.setItem('clickCount', count);
       localStorage.setItem('timePlayed', seconds);
+
+      const dot = document.createElement('div');
+      dot.style.backgroundColor = getRandomColor();
+
+      dot.style.width = '20px';
+      dot.style.height = '20px';
+      dot.style.borderRadius = '50%';
+      dot.style.position = 'absolute';
+
+      const x = Math.random() * window.innerWidth;
+      const y = Math.random() * window.innerHeight;
+
+      dot.style.left = `${x}px`;
+      dot.style.top = `${y}px`;
+      document.body.appendChild(dot);
 
       let formattedCount = String(count).padStart(7, "0");
       let splitCount = formattedCount.split("");
