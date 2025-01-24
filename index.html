@@ -227,7 +227,7 @@
       dot.style.position = 'absolute';
 
       const x = Math.random() * window.innerWidth;
-      const y = window.innerHeight;
+      const y = 2 * window.innerHeight;
 
       dot.style.left = `${x}px`;
       dot.style.top = `${y}px`;
@@ -235,7 +235,7 @@
       dots.push(dot);
 
       let xSpeed = Math.random() * 5;
-      let ySpeed = -50;
+      let ySpeed = -2;
       let xDirection = Math.random() < 0.5 ? -1 : 1;
       let yDirection = Math.random() < 0.5 ? -1 : 1;
       
