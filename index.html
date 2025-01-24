@@ -246,16 +246,11 @@
         let currentX = parseInt(dot.style.left);
         let currentY = parseInt(dot.style.top);
 
+        xDirection *= 0.9;
+        yDirection += -0.1;
+        
         currentX += xSpeed * xDirection;
         currentY += ySpeed * yDirection;
-
-        if (currentX <= 0 || currentX >= window.innerWidth - 20) {
-          xDirection *= -1;
-        }
-
-        if (currentY <= 0 || currentY >= window.innerHeight - 20) {
-          yDirection *= -1;
-        }
 
         dot.style.left = `${currentX}px`;
         dot.style.top = `${currentY}px`;
