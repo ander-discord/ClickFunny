@@ -227,15 +227,15 @@
       dot.style.position = 'absolute';
 
       const x = Math.random() * window.innerWidth;
-      const y = Math.random() * window.innerHeight;;
+      const y = window.innerHeight;
 
       dot.style.left = `${x}px`;
       dot.style.top = `${y}px`;
       document.body.appendChild(dot);
       dots.push(dot);
 
-      let xSpeed = Math.random() * 2 + 1;
-      let ySpeed = -10
+      let xSpeed = Math.random() * 5;
+      let ySpeed = -50;
       let xDirection = Math.random() < 0.5 ? -1 : 1;
       let yDirection = Math.random() < 0.5 ? -1 : 1;
       
