@@ -235,7 +235,7 @@
       dots.push(dot);
 
       let xSpeed = Math.random() * 5;
-      let ySpeed = -10;
+      let ySpeed = 25;
       let xDirection = Math.random() < 0.5 ? -1 : 1;
       let yDirection = Math.random() < 0.5 ? -1 : 1;
       
@@ -244,8 +244,8 @@
         let currentY = parseInt(dot.style.top);
 
         xDirection *= 0.999;
-        yDirection += 0.025;
-        ySpeed += 0.01;
+        yDirection += -0.025;
+        ySpeed += -0.01;
         
         currentX += xSpeed * xDirection;
         currentY += ySpeed * yDirection;
