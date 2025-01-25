@@ -250,15 +250,6 @@
         currentX += xSpeed * xDirection;
         currentY += ySpeed * yDirection;
 
-        if (
-          currentY <= 0 ||
-          currentY >= window.innerHeight - 20 ||
-          currentX <= 0 ||
-          currentX >= window.innerWidth - 20
-        ) {
-          dot.remove();
-        }
-
         dot.style.left = `${currentX}px`;
         dot.style.top = `${currentY}px`;
         requestAnimationFrame(move);
