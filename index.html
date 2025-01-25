@@ -235,7 +235,7 @@
       dots.push(dot);
 
       let xSpeed = Math.random() * 5;
-      let ySpeed = -2;
+      let ySpeed = -3;
       let xDirection = Math.random() < 0.5 ? -1 : 1;
       let yDirection = Math.random() < 0.5 ? -1 : 1;
       
@@ -243,12 +243,21 @@
         let currentX = parseInt(dot.style.left);
         let currentY = parseInt(dot.style.top);
 
-        xDirection *= 0.99;
+        xDirection *= 0.99999;
         yDirection += 0.1;
-        ySpeed += 0.2;
+        ySpeed += 0.01;
         
         currentX += xSpeed * xDirection;
         currentY += ySpeed * yDirection;
+
+        if (
+          currentY <= 0 ||
+          currentY >= window.innerHeight - 20 ||
+          currentX <= 0 ||
+          currentX >= window.innerWidth - 20
+        ) {
+          dot.remove();
+        }
 
         dot.style.left = `${currentX}px`;
         dot.style.top = `${currentY}px`;
