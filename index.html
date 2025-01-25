@@ -186,7 +186,7 @@
   </div>
 
   <script>
-    console.log('Version webgame: 1.07');
+    console.log('Version webgame: 1.075');
     let count = parseInt(localStorage.getItem('clickCount')) || 0;
     let seconds = parseInt(localStorage.getItem('timePlayed')) || 0;
     let dots = [];
@@ -245,6 +245,7 @@
 
         xDirection *= 0.99;
         yDirection += 0.1;
+        ySpeed += 0.2;
         
         currentX += xSpeed * xDirection;
         currentY += ySpeed * yDirection;
