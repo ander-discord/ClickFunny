@@ -186,7 +186,7 @@
   </div>
 
   <script>
-    console.log('Version webgame: 1.082');
+    console.log('Version webgame: 1.083');
     let count = parseInt(localStorage.getItem('clickCount')) || 0;
     let seconds = parseInt(localStorage.getItem('timePlayed')) || 0;
     let dots = [];
@@ -235,7 +235,7 @@
       dots.push(dot);
 
       let xSpeed = Math.random() * 5;
-      let ySpeed = -3;
+      let ySpeed = 10;
       let xDirection = Math.random() < 0.5 ? -1 : 1;
       let yDirection = Math.random() < 0.5 ? -1 : 1;
       
@@ -244,7 +244,7 @@
         let currentY = parseInt(dot.style.top);
 
         xDirection *= 0.999;
-        yDirection += -0.1;
+        yDirection += -0.025;
         ySpeed += -0.01;
         
         currentX += xSpeed * xDirection;
