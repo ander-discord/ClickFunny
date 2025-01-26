@@ -197,6 +197,8 @@
     const jokeDisplay = document.querySelector('h1:nth-of-type(3)');
     const clickSound = new Audio('click.mp3');
 
+    const konamiCode = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
+
     function getRandomColor() {
         const colors = ['#FF0000', '#FFAA00', '#AAFF00', '#00FF00', '#00FFAA', '#00AAFF', '#0000FF', '#FF00FF', '#AA00FF', '#FF00AA'];
         const randomIndex = Math.floor(Math.random() * colors.length);
@@ -213,6 +215,17 @@
        timePlayedContainer.innerHTML = `Time played <br>${formattedTime}`;
     }, 1000);
 
+    let secretCode = [];
+    const konamiCode = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
+    document.addEventListener("keydown", (event) => {
+      secretCode.push(event.key);
+      if (secretCode.join("").includes(konamiCode.join(""))) {
+        alert("Konami Code Activated! 🎉");
+        document.body.style.backgroundImage = "url('https://i.giphy.com/media/26uTt19zWnsI0mGRO/giphy.gif')";
+        secretCode = [];
+      }
+    });
+    
     button.addEventListener('click', async function() {
       count++;
 
@@ -268,7 +281,7 @@
       }
 
       if (count === 2) {
-        alert("I telling joke")
+        jokeDisplay.textContent = "I telling joke"
       }
 
       if ([10, 100, 250, 500, 1000].includes(count)) {
