@@ -186,7 +186,7 @@
   </div>
 
   <script>
-    console.log('Version webgame: 1.09, On test 1');
+    console.log('Version webgame: 1.09, On test 2');
     let count = parseInt(localStorage.getItem('clickCount')) || 0;
     let seconds = parseInt(localStorage.getItem('timePlayed')) || 0;
     let dots = [];
@@ -195,7 +195,6 @@
     const countContainer = document.getElementById('countContainer');
     const timePlayedContainer = document.getElementById('timePlayed');
     const jokeDisplay = document.querySelector('h1:nth-of-type(3)');
-    const clickSound = new Audio('click.mp3');
 
     function getRandomColor() {
         const colors = ['#FF0000', '#FFAA00', '#AAFF00', '#00FF00', '#00FFAA', '#00AAFF', '#0000FF', '#FF00FF', '#AA00FF', '#FF00AA'];
@@ -214,11 +213,11 @@
     }, 1000);
 
     let secretCode = [];
-    const konamiCode = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
+    const pianoCode = ["c", "d", "e", "f", "w", "a", "s", "q"];
     document.addEventListener("keydown", (event) => {
       secretCode.push(event.key);
-      if (secretCode.join("").includes(konamiCode.join(""))) {
-        alert("Konami Code Activated! 🎉");
+      if (secretCode.join("").includes(pianoCode.join(""))) {
+        alert("Simple Piano Code Activated! 🎉");
         document.body.style.backgroundImage = "url('https://i.giphy.com/media/26uTt19zWnsI0mGRO/giphy.gif')";
         secretCode = [];
       }
@@ -229,8 +228,6 @@
 
       localStorage.setItem('clickCount', count);
       localStorage.setItem('timePlayed', seconds);
-
-      clickSound.play();
 
       const dot = document.createElement('div');
       dot.style.backgroundColor = getRandomColor();
