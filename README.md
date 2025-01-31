@@ -1,3 +1,5 @@
+# ClickFunny
+
 This my own webgame url
 https://ander-discord.github.io/ClickFunny/
 
