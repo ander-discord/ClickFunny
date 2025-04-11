@@ -1,5 +1,6 @@
 const counter = document.getElementById("counter");
 const clickBtn = document.getElementById("clickBtn");
+const deleteBtn = document.getElementById("deleteBtn");
 const ws = new WebSocket("wss://testserver-production-0d2a.up.railway.app");
 
 let accountToken = localStorage.getItem("accountToken");
@@ -11,7 +12,7 @@ ws.addEventListener("open", () => {
       token: accountToken
     }));
   } else {
-    const action = prompt("Welcome! Type 'login' or 'signup':").toLowerCase();
+    const action = prompt("Welcome! Type 'login' or 'signup'").toLowerCase();
 
     if (action === "signup") {
       const username = prompt("Choose a username:");
@@ -88,7 +89,25 @@ ws.addEventListener("message", event => {
   if (data.type === "account_created") {
     alert("Account created!");
     localStorage.setItem("accountToken", data.token);
-  }
+  
+    const box = document.querySelector(".box");
+    if (box && box.parentNode) {
+      box.parentNode.removeChild(box);
+    }
+  
+    const box2 = document.createElement("div");
+    box2.className = "box2";
+  
+    console.log("box2 created:", box2);
+  
+    const h1 = document.createElement("h1");
+    h1.innerHTML = data.token.replace(/\n/g, "<br>");
+    box2.appendChild(h1);
+  
+    document.body.appendChild(box2);
+  
+    alert("Your password is: " + data.token);
+  }   
 
   if (data.type === "auth_success") {
     document.getElementById("Usernamelabel").textContent = `Username: ${data.username || "Guest"}`;
@@ -104,5 +123,22 @@ clickBtn.addEventListener("click", () => {
   ws.send(JSON.stringify({
     type: "increment",
     token: localStorage.getItem("accountToken")
+  }));
+});
+
+deleteBtn.addEventListener("click", () => {
+  const token = localStorage.getItem("accountToken");
+  if (!token) {
+    alert("No account found.");
+    return;
+  }
+
+  if (!confirm("Are you sure you want to delete your account?")) {
+    return;
+  }
+
+  socket.send(JSON.stringify({
+    type: "deleteAccount",
+    token: token
   }));
 });
