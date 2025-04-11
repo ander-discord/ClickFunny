@@ -4,25 +4,37 @@ const ws = new WebSocket("wss://testserver-production-0d2a.up.railway.app");
 
 let accountToken = localStorage.getItem("accountToken");
 
-if (!accountToken) {
-  const username = prompt("Create your account - Enter a username:");
-
-  if (username) {
-    ws.addEventListener("open", () => {
-      ws.send(JSON.stringify({
-        type: "create_account",
-        username
-      }));
-    });
-  }
-} else {
-  ws.addEventListener("open", () => {
+ws.addEventListener("open", () => {
+  if (accountToken) {
     ws.send(JSON.stringify({
       type: "auth_token",
       token: accountToken
     }));
-  });
-}
+  } else {
+    const action = prompt("Welcome! Type 'login' or 'signup':").toLowerCase();
+
+    if (action === "signup") {
+      const username = prompt("Choose a username:");
+      if (username) {
+        ws.send(JSON.stringify({
+          type: "create_account",
+          username
+        }));
+      }
+    } else if (action === "login") {
+      const trytoken = prompt("Enter your password:");
+      if (trytoken) {
+        ws.send(JSON.stringify({
+          type: "auth_token",
+          token: trytoken
+        }));
+        localStorage.setItem("accountToken", trytoken);
+      }
+    } else {
+      alert("Invalid option.");
+    }
+  }
+});
 
 function createDigitColumn(digit) {
   const column = document.createElement("div");
@@ -40,9 +52,12 @@ function createDigitColumn(digit) {
 
 function renderDigits(value) {
   const padded = value.toString().padStart(7, "0").split("");
+  const digitCount = value.toString().length;
+  const target = 10 ** digitCount - 1;
 
-  const percent = Math.min((value / 1000000) * 100, 100);
+  const percent = Math.min((value / target) * 100, 100);
   document.getElementById("progressOverlay").style.height = `${percent}%`;
+
   while (counter.children.length < padded.length) {
     counter.appendChild(createDigitColumn(0));
   }
