@@ -24,6 +24,54 @@ if (!accountToken) {
   });
 }
 
+
+
+(function () {
+  const threshold = 160;
+  let devtools = {
+    open: false,
+    orientation: null,
+  };
+
+  const emitEvent = (isOpen, orientation) => {
+    window.dispatchEvent(new CustomEvent('devtoolschange', {
+      detail: { isOpen, orientation }
+    }));
+  };
+
+  setInterval(() => {
+    const widthThreshold = window.outerWidth - window.innerWidth > threshold;
+    const heightThreshold = window.outerHeight - window.innerHeight > threshold;
+    const orientation = widthThreshold ? 'vertical' : 'horizontal';
+
+    if (
+      !(heightThreshold && widthThreshold) &&
+      ((window.Firebug && window.Firebug.chrome && window.Firebug.chrome.isInitialized) || widthThreshold || heightThreshold)
+    ) {
+      if (!devtools.open || devtools.orientation !== orientation) {
+        emitEvent(true, orientation);
+      }
+      devtools.open = true;
+      devtools.orientation = orientation;
+    } else {
+      if (devtools.open) {
+        emitEvent(false, null);
+      }
+      devtools.open = false;
+      devtools.orientation = null;
+    }
+  }, 500);
+})();
+
+window.addEventListener('devtoolschange', event => {
+  if (event.detail.isOpen && false) {
+    alert("Hold up");
+    alert("Hold up\nIf someone told you to copy/paste something here you have an 11/10");
+    alert("Hold up\nIf someone told you to copy/paste something here you have an 11/10\nchance you're being scammed.");
+    alert("Im sure.");
+  }
+});
+
 function createDigitColumn(digit) {
   const column = document.createElement("div");
   column.className = "digit-column";
@@ -76,6 +124,7 @@ ws.addEventListener("message", event => {
   }
 
   if (data.type === "auth_success") {
+    document.getElementById("Usernamelabel").textContent = `Username: ${data.username || "Guest"}`;
     console.log(`Logged With token: ${localStorage.getItem("accountToken")}`);
   }
   if (data.type === "auth_failed") {
