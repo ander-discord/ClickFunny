@@ -32,6 +32,21 @@ body {
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
     text-align: center;
   }
+
+  .box2 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(12, 12, 12, 0.1);
+    border-radius: 0;
+    text-align: center;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   
   .counter {
     display: flex;
@@ -69,6 +84,23 @@ body {
     transition: background-color 0.2s;
   }
 
+  dbutton {
+    background-color: rgb(255, 60, 0);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100px;
+    height: 50px;
+    box-sizing: border-box;
+    transition: background-color 0.2s;
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+  }
+
   #progressOverlay {
     position: fixed;
     bottom: 0;
@@ -78,5 +110,6 @@ body {
     background: rgba(0, 174, 255, 0.3);
     border-top: 2px solid rgb(0, 183, 255);
     z-index: -1;
+    overflow: hidden;
     transition: height 2s ease;
-  }  
+  }
