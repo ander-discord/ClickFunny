@@ -163,7 +163,7 @@ deleteBtn.addEventListener("click", () => {
     return;
   }
 
-  socket.send(JSON.stringify({
+  ws.send(JSON.stringify({
     type: "deleteAccount",
     token: token
   }));
