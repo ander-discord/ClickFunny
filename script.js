@@ -5,7 +5,7 @@ const SystelTitle = document.getElementById("SystelTitle");
 
 const ws = new WebSocket("wss://testserver-production-0d2a.up.railway.app");
 
-let last_joke = "No joke.";
+let last_msg = "No message";
 let accountToken = localStorage.getItem("accountToken");
 const grid = document.getElementsByClassName("grid")[0]; 
 const positions = [
@@ -24,6 +24,11 @@ bV.forEach((val, i) => {
   btn.textContent = val > 0 ? `+${val}` : `${val}`;
   grid.appendChild(btn);
   buttons.push({ el: btn, pos: i });
+  btn.style.boxShadow = '0 0 30px rgba(0, 0, 0, 0.7)';
+
+  if (val < 0) {
+    btn.style.backgroundColor ="rgb(255, 53, 53)";
+  }  
 
   const [x, y] = positions[i];
   btn.style.transform = `translate(${x * size + 40}px, ${y * size - 30}px)`;
@@ -132,15 +137,13 @@ ws.addEventListener("message", event => {
 
   if (data.type === "update") {
     renderDigits(data.count);
+
     document.getElementById("Lastclick").textContent = `Last click From ${data.from}`;
 
-    if (data.joke.type === 'single') {
-      document.getElementById("SystemLabel").textContent = data.joke.joke;
-    } else {
-      document.getElementById("SystemLabel").textContent = `${data.joke.setup} - ${data.joke.delivery}`;
-    }
+    SystemLabel.innerHTML = data.msg.replace(/\*(.*?)\*/g, "<em>$1</em>");
+    SystemLabel.style.fontSize = `100%`;   
 
-    if (data.joke.joke !== last_joke) {
+    if (data.msg !== last_msg) {
       const now = new Date();
       let hours = now.getHours();
       let minutes = now.getMinutes();
@@ -150,11 +153,10 @@ ws.addEventListener("message", event => {
       hours = hours ? hours : 12; 
       minutes = minutes < 10 ? '0' + minutes : minutes;
     
-      SystelTitle.textContent = `System ● ${hours}:${minutes} ${ampm} | Click have chance`;
+      SystelTitle.textContent = `System ● ${hours}:${minutes} ${ampm} | Powered By AI`;
       
-      last_joke = data.joke.joke;
+      last_msg = data.msg;
     }
-    
   }  
 
   if (data.type === "account_created") {
