@@ -1,5 +1,4 @@
 const counter = document.getElementById("counter");
-const clickBtn = document.getElementById("clickBtn");
 const deleteBtn = document.getElementById("deleteBtn");
 const SystemLabel = document.getElementById("SystemLabel");
 const SystelTitle = document.getElementById("SystelTitle");
@@ -8,6 +7,50 @@ const ws = new WebSocket("wss://testserver-production-0d2a.up.railway.app");
 
 let last_joke = "No joke.";
 let accountToken = localStorage.getItem("accountToken");
+const grid = document.getElementsByClassName("grid")[0]; 
+const positions = [
+  [0, 0], [1, 0], [2, 0],
+  [0, 1], [1, 1], [2, 1]
+];
+
+const size = 110;
+const bV = [-3, -2, -1, 1, 2, 3];
+
+const buttons = [];
+
+bV.forEach((val, i) => {
+  const btn = document.createElement("button");
+  btn.id = `clickBtn${i + 1}`;
+  btn.textContent = val > 0 ? `+${val}` : `${val}`;
+  grid.appendChild(btn);
+  buttons.push({ el: btn, pos: i });
+
+  const [x, y] = positions[i];
+  btn.style.transform = `translate(${x * size + 40}px, ${y * size - 30}px)`;
+
+  btn.addEventListener("click", () => {
+    if (Math.random() < 0.75) {
+      const currentIndex = buttons.findIndex(b => b.el === btn);
+      let otherIndex;
+      do {
+        otherIndex = Math.floor(Math.random() * buttons.length);
+      } while (otherIndex === currentIndex);
+
+      [buttons[currentIndex].pos, buttons[otherIndex].pos] = [buttons[otherIndex].pos, buttons[currentIndex].pos];
+
+      buttons.forEach(({ el, pos }) => {
+        const [x, y] = positions[pos];
+        el.style.transform = `translate(${x * size + 40}px, ${y * size - 30}px)`;
+      });
+    }
+
+    ws.send(JSON.stringify({
+      type: "increment",
+      token: localStorage.getItem("accountToken"),
+      add: val
+    }));
+  });
+});
 
 ws.addEventListener("open", () => {
   if (accountToken) {
@@ -48,6 +91,7 @@ function createDigitColumn(digit) {
   for (let i = 0; i <= 9; i++) {
     const span = document.createElement("span");
     span.textContent = i;
+    span.style.color = "orange";
     column.appendChild(span);
   }
 
@@ -143,14 +187,6 @@ ws.addEventListener("message", event => {
     alert("Error 011");
     localStorage.removeItem("accountToken");
   }
-});
-
-clickBtn.addEventListener("click", () => {
-  ws.send(JSON.stringify({
-    type: "increment",
-    token: localStorage.getItem("accountToken"),
-    add: 1
-  }));
 });
 
 deleteBtn.addEventListener("click", () => {
