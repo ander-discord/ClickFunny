@@ -36,6 +36,21 @@ body {
     text-align: center;
   }
 
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 75px);
+    gap: 10px;
+  }
+
+  .grid button {
+    position: absolute;
+    width: 95px;
+    height: 95px;
+    font-size: 24px;
+    transition: transform 0.4s ease;
+  }
+
   .aibox {
     background-color: #1e1e1e;
     padding: 10px;
