@@ -1,5 +1,5 @@
 const counter = document.getElementById("counter");
-const deleteBtn = document.getElementById("deleteBtn");
+const logoutBtn = document.getElementById("logoutBtn");
 const SystemLabel = document.getElementById("SystemLabel");
 const SystelTitle = document.getElementById("SystelTitle");
 
@@ -35,27 +35,62 @@ bV.forEach((val, i) => {
   const [x, y] = positions[i];
   btn.style.transform = `translate(${x * (size + 30) - 5}px, ${y * size - 30}px)`;
 
-  btn.addEventListener("click", () => {
-    if (Math.random() < 0.75) {
-      const currentIndex = buttons.findIndex(b => b.el === btn);
-      let otherIndex;
-      do {
-        otherIndex = Math.floor(Math.random() * buttons.length);
-      } while (otherIndex === currentIndex);
+  let countdown = 0;
+  let enabled = true
+  let bonus = 0;
 
-      [buttons[currentIndex].pos, buttons[otherIndex].pos] = [buttons[otherIndex].pos, buttons[currentIndex].pos];
-
-      buttons.forEach(({ el, pos }) => {
-        const [x, y] = positions[pos];
-        el.style.transform = `translate(${x * (size + 30) - 5}px, ${y * size - 30}px)`;
-      });
+  setInterval(() => {
+    if (countdown >= 0 && !enabled) {
+      btn.textContent = countdown.toFixed(1);
+      countdown -= 0.1;
+      
+      if (Math.abs(countdown) < 0.05 && Math.random() < 0.1) {  
+        if (val > 0) {
+          btn.style.background = 'orange';
+        } else {
+          btn.style.background = 'rgb(255, 16, 16)';
+        }
+        bonus = val
+      }
+    } else {
+      btn.textContent = val + bonus > 0 ? `+${val + bonus}` : `${val + bonus}`;
+      enabled = true;
     }
+  }, 25);  
 
-    ws.send(JSON.stringify({
-      type: "increment",
-      token: localStorage.getItem("accountToken"),
-      add: val
-    }));
+  btn.addEventListener("click", () => {
+    if (enabled) {
+      if (Math.random() < 0.75) {
+        const currentIndex = buttons.findIndex(b => b.el === btn);
+        let otherIndex;
+        do {
+          otherIndex = Math.floor(Math.random() * buttons.length);
+        } while (otherIndex === currentIndex);
+
+        [buttons[currentIndex].pos, buttons[otherIndex].pos] = [buttons[otherIndex].pos, buttons[currentIndex].pos];
+
+        buttons.forEach(({ el, pos }) => {
+          const [x, y] = positions[pos];
+          el.style.transform = `translate(${x * (size + 30) - 5}px, ${y * size - 30}px)`;
+        });
+      }
+
+      ws.send(JSON.stringify({
+        type: "increment",
+        token: localStorage.getItem("accountToken"),
+        add: val + bonus
+      }));
+
+      if (val < 0) {
+        btn.style.backgroundColor ="rgb(255, 53, 53)";
+      } else {
+        btn.style.backgroundColor = "rgb(0, 174, 255)";
+      }
+
+      bonus = 0
+      countdown = 1
+      enabled = false
+    }
   });
 });
 
@@ -193,19 +228,9 @@ ws.addEventListener("message", event => {
   }
 });
 
-deleteBtn.addEventListener("click", () => {
-  const token = localStorage.getItem("accountToken");
-  if (!token) {
-    alert("No account found.");
-    return;
+logoutBtn.addEventListener("click", () => {
+  if (confirm("Are you sure you want to log out?")) {
+    localStorage.removeItem("accountToken");
+    location.reload();
   }
-
-  if (!confirm("Are you sure you want to delete your account?")) {
-    return;
-  }
-
-  ws.send(JSON.stringify({
-    type: "deleteAccount",
-    token: token
-  }));
 });
