@@ -148,7 +148,8 @@ ws.addEventListener("message", event => {
 clickBtn.addEventListener("click", () => {
   ws.send(JSON.stringify({
     type: "increment",
-    token: localStorage.getItem("accountToken")
+    token: localStorage.getItem("accountToken"),
+    add: 1
   }));
 });
 
