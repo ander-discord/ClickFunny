@@ -22,16 +22,18 @@ bV.forEach((val, i) => {
   const btn = document.createElement("button");
   btn.id = `clickBtn${i + 1}`;
   btn.textContent = val > 0 ? `+${val}` : `${val}`;
-  grid.appendChild(btn);
-  buttons.push({ el: btn, pos: i });
   btn.style.boxShadow = '0 0 30px rgba(0, 0, 0, 0.7)';
+  btn.style.width = '130px'
 
   if (val < 0) {
     btn.style.backgroundColor ="rgb(255, 53, 53)";
-  }  
+  } 
+
+  grid.appendChild(btn);
+  buttons.push({ el: btn, pos: i });
 
   const [x, y] = positions[i];
-  btn.style.transform = `translate(${x * size + 40}px, ${y * size - 30}px)`;
+  btn.style.transform = `translate(${x * (size + 30) - 5}px, ${y * size - 30}px)`;
 
   btn.addEventListener("click", () => {
     if (Math.random() < 0.75) {
@@ -45,7 +47,7 @@ bV.forEach((val, i) => {
 
       buttons.forEach(({ el, pos }) => {
         const [x, y] = positions[pos];
-        el.style.transform = `translate(${x * size + 40}px, ${y * size - 30}px)`;
+        el.style.transform = `translate(${x * (size + 30) - 5}px, ${y * size - 30}px)`;
       });
     }
 
